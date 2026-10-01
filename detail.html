@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bind-time SEO. The detail page is a single reusable template; these tags
+       are derived from the record that matches the URL. -->
+  <meta name="description" content="Skatepark details for New York City.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Skatepark — NYC Skatepark Directory">
+  <meta property="og:description" content="Skatepark details for New York City.">
+  <meta property="og:url" content="/">
+  <title>Skatepark — NYC Skatepark Directory</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="">
+</head>
+<body class="detail-page">
+  <header class="site-header">
+    <a class="brand" href="/">
+      <span class="brand-mark">NY</span>
+      <span data-site-name>NYC Skateparks</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="/#directory">Browse</a>
+      <a href="#facts">Facts</a>
+      <button class="button button-small button-outline" type="button" data-open-feedback>
+        Suggest an update
+      </button>
+    </nav>
+  </header>
+
+  <main id="park-main">
+    <section class="hero hero-detail">
+      <div class="hero-inner hero-inner-detail">
+        <nav class="breadcrumb" aria-label="Breadcrumb" id="breadcrumb"></nav>
+
+        <p class="eyebrow" id="park-eyebrow">Skatepark</p>
+        <h1 id="park-title">Loading...</h1>
+        <p class="hero-copy hero-copy-detail" id="park-summary"></p>
+
+        <div class="detail-tags" id="park-tags"></div>
+
+        <div class="detail-actions">
+          <a class="button button-dark button-small" href="/#directory">Back to the directory</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location on the OpenStreetMap map. -->
+    <section class="map-section" id="map-section">
+      <div class="section-heading map-heading">
+        <div>
+          <p class="eyebrow">The map</p>
+          <h2>Where it is</h2>
+        </div>
+
+        <p class="map-summary">
+          <span id="map-location-count">0</span> mapped locations
+        </p>
+      </div>
+
+      <div
+        class="directory-map"
+        id="directory-map"
+        role="application"
+        aria-label="Map showing this skatepark"
+      ></div>
+    </section>
+
+    <!-- Full record for this skatepark. Only fields that exist are rendered. -->
+    <article class="park-record" id="park-record" hidden></article>
+  </main>
+
+  <div class="content-section" id="not-found" hidden>
+    <div class="empty-state">
+      <h2>Skatepark not found</h2>
+      <p>There is no skatepark at this address in the directory.</p>
+      <p><a class="text-button" href="/">Return to the directory</a></p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <span>© <span id="current-year"></span> <span data-site-name>NYC Skateparks</span></span>
+    <span class="footer-links">
+      <a href="/legal.html">Legal Notice</a>
+      <a href="/privacy.html">Privacy Policy</a>
+    </span>
+  </footer>
+
+  <!-- Feedback modal -->
+  <dialog class="modal" id="feedback-modal">
+    <form class="modal-card" id="feedback-form" method="dialog">
+      <button class="modal-close" type="button" data-close-feedback aria-label="Close">
+        ×
+      </button>
+
+      <p class="eyebrow">Help improve this directory</p>
+      <h2>Is something inaccurate?</h2>
+      <p class="modal-intro">
+        Send a correction. You do not need an account.
+      </p>
+
+      <label for="feedback-entry">Entry</label>
+      <select id="feedback-entry" name="entry" required></select>
+
+      <label for="feedback-message">What should be changed?</label>
+      <textarea
+        id="feedback-message"
+        name="message"
+        rows="5"
+        maxlength="2000"
+        required
+      ></textarea>
+
+      <label for="feedback-email">Email, optional</label>
+      <input
+        id="feedback-email"
+        name="email"
+        type="email"
+        placeholder="Only if you want a reply"
+      >
+
+      <!-- Honeypot: normal visitors should leave this empty -->
+      <label class="trap" aria-hidden="true">
+        Website
+        <input name="website" tabindex="-1" autocomplete="off">
+      </label>
+
+      <p class="form-status" id="feedback-status" role="status"></p>
+
+      <button class="button button-dark" type="submit">
+        Send correction
+      </button>
+    </form>
+  </dialog>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <script src="/shared.js"></script>
+  <script src="/skatepark.js"></script>
+</body>
+</html>
