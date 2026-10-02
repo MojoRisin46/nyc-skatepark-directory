@@ -7,13 +7,13 @@
        are derived from the record that matches the URL. -->
   <meta name="description" content="Skatepark details for New York City.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="/">
+  <!-- Canonical is set at runtime from the site base URL, so it works under a Pages project path. -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="Skatepark — NYC Skatepark Directory">
   <meta property="og:description" content="Skatepark details for New York City.">
-  <meta property="og:url" content="/">
+  <meta property="og:url" content="">
   <title>Skatepark — NYC Skatepark Directory</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="styles.css">
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -22,13 +22,13 @@
 </head>
 <body class="detail-page">
   <header class="site-header">
-    <a class="brand" href="/">
+    <a class="brand" href="index.html">
       <span class="brand-mark">NY</span>
       <span data-site-name>NYC Skateparks</span>
     </a>
 
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="/#directory">Browse</a>
+      <a href="index.html#directory">Browse</a>
       <a href="#facts">Facts</a>
       <button class="button button-small button-outline" type="button" data-open-feedback>
         Suggest an update
@@ -48,7 +48,7 @@
         <div class="detail-tags" id="park-tags"></div>
 
         <div class="detail-actions">
-          <a class="button button-dark button-small" href="/#directory">Back to the directory</a>
+          <a class="button button-dark button-small" href="index.html#directory">Back to the directory</a>
         </div>
       </div>
     </section>
@@ -82,15 +82,15 @@
     <div class="empty-state">
       <h2>Skatepark not found</h2>
       <p>There is no skatepark at this address in the directory.</p>
-      <p><a class="text-button" href="/">Return to the directory</a></p>
+      <p><a class="text-button" href="index.html">Return to the directory</a></p>
     </div>
   </div>
 
   <footer class="site-footer">
     <span>© <span id="current-year"></span> <span data-site-name>NYC Skateparks</span></span>
     <span class="footer-links">
-      <a href="/legal.html">Legal Notice</a>
-      <a href="/privacy.html">Privacy Policy</a>
+      <a href="legal.html">Legal Notice</a>
+      <a href="privacy.html">Privacy Policy</a>
     </span>
   </footer>
 
@@ -145,7 +145,7 @@
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-  <script src="/shared.js"></script>
-  <script src="/skatepark.js"></script>
+  <script src="shared.js"></script>
+  <script src="skatepark.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 
   Renders every record from data/skateparks.json and adds search,
   filtering and sorting on top. Each card links to the reusable
-  detail template at /skateparks/<slug>.
+  detail template at detail.html?park=<slug>.
 */
 
 const state = {
@@ -239,6 +239,11 @@ clearSearch.addEventListener("click", () => {
 
 async function init() {
   configureSite();
+
+  // Canonical/og:url resolved at runtime so they carry the Pages
+  // project subpath instead of a domain-root "/".
+  setCanonical(siteBaseUrl() + "index.html");
+  setMetaTag({ property: "og:url" }, siteBaseUrl() + "index.html");
 
   try {
     parks = await loadParks();

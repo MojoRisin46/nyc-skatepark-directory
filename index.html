@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A directory of New York City skateparks, skate plazas and skate spots. Search and filter by borough, type and surface.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="/">
+  <!-- Canonical is set at runtime from the site base URL, so it works under a Pages project path. -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="NYC Skatepark Directory">
   <meta property="og:description" content="A directory of New York City skateparks, skate plazas and skate spots.">
-  <meta property="og:url" content="/">
+  <meta property="og:url" content="">
   <title>NYC Skatepark Directory — Find a skatepark in New York City</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="styles.css">
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -20,7 +20,7 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/">
+    <a class="brand" href="index.html">
       <span class="brand-mark">NY</span>
       <span data-site-name>NYC Skateparks</span>
     </a>
@@ -135,8 +135,8 @@
   <footer class="site-footer">
     <span>© <span id="current-year"></span> <span data-site-name>NYC Skateparks</span></span>
     <span class="footer-links">
-      <a href="/legal.html">Legal Notice</a>
-      <a href="/privacy.html">Privacy Policy</a>
+      <a href="legal.html">Legal Notice</a>
+      <a href="privacy.html">Privacy Policy</a>
     </span>
   </footer>
 
@@ -191,7 +191,7 @@
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-  <script src="/shared.js"></script>
-  <script src="/app.js"></script>
+  <script src="shared.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

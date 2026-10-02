@@ -12,13 +12,15 @@ const siteConfig = {
   title: "New York City skateparks.",
   description:
     "A directory of skateparks, skate plazas and skate spots across the five boroughs.",
-  dataUrl: "/data/skateparks.json"
+  /* Relative so the site also works under a GitHub Pages project
+     subpath (https://<user>.github.io/<repo>/), not only at a domain root. */
+  dataUrl: "data/skateparks.json"
 };
 
-/* Where a reusable detail template lives. One file answers every park:
-   with a server rewrite it is /skateparks/<slug>, and detail.html is the
-   file it serves. */
-const PARK_PATH = "/skateparks/";
+/* One reusable detail template answers every park. GitHub Pages cannot
+   rewrite pretty URLs, so the canonical form is the query URL:
+   detail.html?park=<slug> */
+const DETAIL_PAGE = "detail.html";
 
 /* ---------- text ---------- */
 
@@ -35,6 +37,7 @@ function escapeAttribute(value) {
   const safeValue = String(value);
 
   if (
+    safeValue.startsWith("detail.html") ||
     safeValue.startsWith("/") ||
     safeValue.startsWith("#") ||
     safeValue.startsWith("https://")
@@ -142,7 +145,7 @@ function nameNotes(name, finalName) {
   return notes;
 }
 
-// ASCII, lowercase, hyphenated: /skateparks/central-park-skatepark
+// ASCII, lowercase, hyphenated: central-park-skatepark
 function slugify(value) {
   return String(value)
     .normalize("NFD")
@@ -157,12 +160,21 @@ function parkSlug(park) {
   return slugify(park.park_name);
 }
 
-function parkPath(park) {
-  return `${PARK_PATH}${parkSlug(park)}`;
+/* Absolute base URL of the site's directory, e.g.
+   https://<user>.github.io/<repo>/ — derived from the page URL so it
+   adapts to a Pages project subpath automatically. */
+function siteBaseUrl() {
+  return new URL(".", window.location.href).href;
 }
 
-/* Every skatepark lives at /skateparks/<slug>. Assets and the data file
-   use root-absolute paths so this works under that URL. */
+/* The canonical (and absolute) URL path of a park's page, relative to
+   wherever the site is mounted (domain root or Pages project subpath). */
+function parkPath(park) {
+  return `${DETAIL_PAGE}?park=${parkSlug(park)}`;
+}
+
+/* Every skatepark links to the single detail template via a query
+   parameter — relative, so it works under a GitHub Pages project path. */
 function parkHref(park) {
   return parkPath(park);
 }
@@ -242,8 +254,8 @@ function parkBreadcrumb(park, origin = "") {
   return {
     html: `
       <ol class="breadcrumb-list">
-        <li><a href="/">Directory</a></li>
-        <li><a href="/#directory">Skateparks</a></li>
+        <li><a href="index.html">Directory</a></li>
+        <li><a href="index.html#directory">Skateparks</a></li>
         <li aria-current="page">${escapeHtml(name)}</li>
       </ol>
     `,
@@ -251,8 +263,8 @@ function parkBreadcrumb(park, origin = "") {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Directory", item: `${origin}/` },
-        { "@type": "ListItem", position: 2, name: "Skateparks", item: `${origin}/#directory` },
+        { "@type": "ListItem", position: 1, name: "Directory", item: `${origin}index.html` },
+        { "@type": "ListItem", position: 2, name: "Skateparks", item: `${origin}index.html#directory` },
         { "@type": "ListItem", position: 3, name, item: `${origin}${parkPath(park)}` }
       ]
     }

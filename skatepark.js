@@ -2,7 +2,8 @@
   The reusable skatepark detail template.
 
   One file renders any skatepark: it reads the slug from the URL
-  (/skateparks/<slug>, or detail.html?park=<slug> straight from disk),
+  (/skateparks/<slug> bookmarks still work, but the canonical URL is
+   detail.html?park=<slug>),
   finds the matching record and binds the page to it.
 
   Only fields that exist for that skatepark are rendered. Nothing is
@@ -375,7 +376,7 @@ function renderHero(park) {
     .map(tag => `<span class="tag">${escapeHtml(String(tag).trim())}</span>`)
     .join("");
 
-  const crumb = parkBreadcrumb(park, window.location.origin);
+  const crumb = parkBreadcrumb(park, siteBaseUrl());
   document.querySelector("#breadcrumb").innerHTML = crumb.html;
   setJsonLd("breadcrumb-jsonld", crumb.json);
 }
@@ -419,8 +420,8 @@ function renderSeo(park) {
   setMetaTag({ property: "og:title" }, pageTitle);
   setMetaTag({ property: "og:description" }, description);
   setMetaTag({ property: "og:type" }, "article");
-  setMetaTag({ property: "og:url" }, parkPath(park));
-  setCanonical(parkPath(park));
+  setMetaTag({ property: "og:url" }, siteBaseUrl() + parkPath(park));
+  setCanonical(siteBaseUrl() + parkPath(park));
 
   const geo =
     park.latitude !== null && park.latitude !== undefined &&
@@ -435,7 +436,7 @@ function renderSeo(park) {
     "@type": "SportsActivityLocation",
     name: `${name}${borough ? `, ${borough}` : ""}`,
     description,
-    url: parkPath(park),
+    url: siteBaseUrl() + parkPath(park),
     ...(geo ? { geo } : {}),
     address: {
       "@type": "PostalAddress",
@@ -462,12 +463,13 @@ function renderNotFound(slug) {
 
   if (slug) {
     notFound.querySelector("p").textContent =
-      `There is no skatepark at “/skateparks/${slug}” in the directory.`;
+      `There is no skatepark at “detail.html?park=${slug}” in the directory.`;
   }
 }
 
-/* The slug comes from /skateparks/<slug>; falling back to ?park=<slug>
-   lets the same template be opened directly from disk. */
+/* The slug comes from detail.html?park=<slug>. The old pretty-URL form
+   (/skateparks/<slug>) is still parsed as a fallback for bookmarks, but
+   the site only ever generates query-parameter links. */
 function currentSlug() {
   const fromQuery = new URLSearchParams(window.location.search).get("park");
   if (fromQuery) return fromQuery;

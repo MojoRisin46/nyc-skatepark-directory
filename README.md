@@ -23,35 +23,32 @@ the data over HTTP. The original JSON was never modified.
 
 Each skatepark has one URL:
 
-    /skateparks/<slug>          e.g. /skateparks/martinez-playground-skatepark
+    detail.html?park=<slug>     e.g. detail.html?park=martinez-playground-skatepark
 
 `detail.html` is the single reusable template that renders every skatepark.
-The slug is the only variable: the template reads it from the URL, finds the
-matching record and binds the page to it. No per-skatepark HTML files exist.
+The slug is the only variable: the template reads it from the `park` query
+parameter, finds the matching record and binds the page to it. No
+per-skatepark HTML files exist.
 
-Because `detail.html` can be served at a nested URL, all asset and data
-references are root-absolute (`/styles.css`, `/shared.js`, `/data/skateparks.json`).
+This is a static GitHub Pages site, so there is no server rewrite for
+pretty `/skateparks/<slug>` URLs — the query-parameter form is the
+canonical one. (`skatepark.js` still parses `/skateparks/<slug>` if an old
+bookmarked URL is opened directly, but nothing generates those links.)
 
-### Serving it
+The site is hosted under a repository subpath
+(`https://<user>.github.io/<repo>/`), so all asset, page and data
+references are relative to the page (`styles.css`, `shared.js`,
+`data/skateparks.json`, `index.html`, `detail.html?park=...`) rather than
+root-absolute, which would break under the subpath.
 
-The template must be reachable at the pretty URL, so the server rewrites the
-path onto one file:
+### Serving it locally
 
-    /                -> index.html
-    /skateparks/<slug> -> detail.html
-    /*               -> file from disk
+No rewrite rules are needed — any static file server works:
 
-Any static server can do this. Example using `http-server`:
+    python3 -m http.server 8081
 
-    npx http-server . --proxy http://localhost:8080
-
-or with nginx:
-
-    location /skateparks/ { try_files $uri /detail.html; }
-
-`skatepark.js` reads the slug from `/skateparks/<slug>`; it also accepts
-`detail.html?park=<slug>`, so a plain static server can be used for a quick
-local preview of a single page.
+then open http://localhost:8081/ and, for a detail page,
+http://localhost:8081/detail.html?park=<slug>.
 
 ## What is shown
 
@@ -71,7 +68,9 @@ Per-skatepark, derived from the record itself:
 - `<title>` — "Name, Borough — NYC Skateparks"
 - `<meta name="description">` — a sentence from the record, or one composed
   from the skatepark's own type/surface/borough/terrain values
-- `<link rel="canonical">` and `og:url` — `/skateparks/<slug>`
+- `<link rel="canonical">` and `og:url` — absolute
+  `<site-base>detail.html?park=<slug>` (the site base is derived from the
+  current URL, so it is correct under a GitHub Pages project subpath)
 - `<h1>` — the skatepark name; breadcrumb with `BreadcrumbList` JSON-LD
 - `SportsActivityLocation` JSON-LD (name, address, coordinates, hours,
   free access) — optional properties are omitted when the field is absent
